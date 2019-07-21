@@ -17,9 +17,9 @@ sudo apt-get -y upgrade
 
 # Install and configure Samba
 sudo apt-get install -y samba samba-common-bin
-wget https://raw.githubusercontent.com/toolboc/psx-pi-smbshare/master/samba-init.sh -O /home/pi/samba-init.sh
-chmod 755 /home/pi/samba-init.sh
-sudo cp /home/pi/samba-init.sh /usr/local/bin
+cp ./samba-init.sh $HOME/samba-init.sh
+chmod 755 $HOME/samba-init.sh
+sudo cp $HOME/samba-init.sh /usr/local/bin
 sudo mkdir -m 1777 /share
 
 # Install ps3netsrv
@@ -32,9 +32,9 @@ sudo cp ps3netsrv++ /usr/local/bin
 
 
 # Install USB automount settings
-wget https://raw.githubusercontent.com/toolboc/psx-pi-smbshare/master/automount-usb.sh -O /home/pi/automount-usb.sh
-chmod 755 /home/pi/automount-usb.sh
-sudo /home/pi/automount-usb.sh
+cp ./automount-usb.sh $HOME/automount-usb.sh
+chmod 755 $HOME/automount-usb.sh
+sudo $HOME/automount-usb.sh
 
 # Set samba-init + ps3netsrv, wifi-to-eth-route, setup-wifi-access-point, and Xlink Kai to run on startup
 { echo -e "@reboot sudo bash /usr/local/bin/samba-init.sh\n"; } | crontab -u pi -
