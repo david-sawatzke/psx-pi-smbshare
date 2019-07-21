@@ -67,7 +67,7 @@ then
     exit
 fi
 
-runuser pi -s /bin/bash -c "/usr/bin/pmount --umask 000 --noatime -w --sync /dev/${PART} /media/${PART}"
+runuser soryio -s /bin/bash -c "/usr/bin/pmount --umask 000 --noatime -w --sync /dev/${PART} /media/${PART}"
 
 pkill ps3netsrv++
 /usr/local/bin/ps3netsrv++ -d /media/$PART
@@ -96,7 +96,7 @@ EOS
 
 #if you wish to create a samba user with password you can use the following:
 #sudo smbpasswd -a pi
-sudo /etc/init.d/samba restart
+sudo systemctl restart samba
 EOF
 
 # Make script executable

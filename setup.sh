@@ -36,8 +36,8 @@ cp ./automount-usb.sh $HOME/automount-usb.sh
 chmod 755 $HOME/automount-usb.sh
 sudo $HOME/automount-usb.sh
 
-# Set samba-init + ps3netsrv, wifi-to-eth-route, setup-wifi-access-point, and Xlink Kai to run on startup
-{ echo -e "@reboot sudo bash /usr/local/bin/samba-init.sh\n"; } | crontab -u pi -
+# Set samba-init + ps3netsrv to run on startup
+{ echo -e "@reboot sudo bash /usr/local/bin/samba-init.sh\n"; } | crontab -u soryio -
 
 # Start services
 sudo /usr/local/bin/samba-init.sh
