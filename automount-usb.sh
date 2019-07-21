@@ -89,7 +89,7 @@ create mask = 0777
 directory mask = 0777
 Public = yes
 Guest ok = yes
-force user = pi
+force user = soryio
 follow symlinks = yes
 wide links = yes
 EOS
