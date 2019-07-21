@@ -96,7 +96,7 @@ EOS
 
 #if you wish to create a samba user with password you can use the following:
 #sudo smbpasswd -a pi
-sudo systemctl restart samba
+sudo systemctl restart smbd
 EOF
 
 # Make script executable
