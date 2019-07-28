@@ -1,0 +1,19 @@
+[package]
+name = "usb_switcher"
+version = "0.1.0"
+authors = ["David Sawatzke <david-sawatzke@users.noreply.github.com>"]
+edition = "2018"
+
+[dependencies]
+likemod = "= 0.2.0"
+toml = "0.5.1"
+serde = "1.0.97"
+serde_derive = "1.0.97"
+actix-rt = "0.2.2"
+actix-web = "1.0.0"
+actix-files = "0.1.1"
+actix-session = "0.1.0"
+futures = "0.1.25"
+env_logger = "0.5"
+bytes = "0.4"
+uname = "= 0.1.1"

@@ -1,0 +1,2 @@
+port = 7424
+mounts = ["/media/foo", "/media/bar"]
