@@ -1,10 +1,9 @@
-use likemod::{ModLoader, ModParamValue, ModParams, ModUnloader};
 use serde_derive::Deserialize;
 use std::io::Read;
-use std::net::{TcpListener, TcpStream};
+use std::net::TcpListener;
+use std::process::Command;
 use std::{fs, io, thread, time};
 use toml;
-use uname;
 
 #[derive(Deserialize)]
 struct Config {
@@ -16,28 +15,28 @@ fn main() -> io::Result<()> {
     let config = fs::read_to_string("usbswitcher.toml")?;
     let config: Config = toml::de::from_str(&config).unwrap();
     let listener = TcpListener::bind("127.0.0.1:7424")?;
+    let mut unloader = Command::new("rmmod");
+    unloader.arg("g_mass_storage");
     for stream in listener.incoming() {
         let stream = stream.unwrap();
         for byte in stream.bytes() {
             let byte = byte.unwrap();
+            // Special shutdown byte, just cause I needed to put it somewhere to easily
+            if byte == 0xFF {
+                Command::new("shutdown").output().expect("Couldn't reboot");
+                continue;
+            }
             // Maybe doing this via sysfs is nicer than this whole spiel with unloading & loading
-            let unloader = ModUnloader::new();
-            unloader.unload_sync("g_mass_storage", true).unwrap();
+            unloader.output().expect("Couldn't unload");
             let delay = time::Duration::from_secs(1);
             thread::sleep(delay);
             if let Some(mount) = config.mounts.get(byte as usize) {
                 println!("{}", mount);
-                let mut params = ModParams::new();
-                params.insert("file".to_string(), ModParamValue::Str(mount.to_string()));
-                let mut loader = ModLoader::default();
-                // Let's emulate where modprobe searches
-                let release = uname::uname().unwrap().release;
-                let file = format!("/lib/module/{}/g_mass_storage", release);
-                let file = fs::File::open(file).unwrap();
-                loader
-                    .set_parameters(params)
-                    .load_module_file(&file)
-                    .unwrap();
+                Command::new("modprobe")
+                    .arg("g_mass_storage")
+                    .arg(format!("file={}", mount))
+                    .output()
+                    .expect("Couldn't load");
             }
         }
     }
